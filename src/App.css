@@ -31,3 +31,6 @@ body{
   height:50px;
   border:1px solid #ccc;
 }
+.winner{
+  color:orangered;
+}

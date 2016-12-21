@@ -10,6 +10,7 @@ class GameCell extends Component {
   render() {
     const {numberCell, table}=this.props;
 
+
     return (
       <div className={cx('game-cell')} onClick={this.clickPutMark}>{table[numberCell]}</div>
     );
@@ -17,9 +18,11 @@ class GameCell extends Component {
 
 
     clickPutMark = (ev) => {
-    const {numberCell, side, putMark}=this.props;
+    const {numberCell, putMark,table}=this.props;
       ev.preventDefault();
-      putMark(numberCell);
+      if (table[numberCell]===null){
+        putMark(numberCell);
+      }
   }
 }
 

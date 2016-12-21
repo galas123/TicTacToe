@@ -10,11 +10,11 @@ export default class chooseSideBtn extends Component {
   render() {
     const {caption}=this.props;
     return (
-      <button className={cx('choosing-game-btn')} onClick={this.clickCalcButton}>{caption}</button>
+      <button className={cx('choosing-game-btn')} onClick={this.clickTable}>{caption}</button>
     );
   }
 
-  clickCalcButton = (ev) => {
+  clickTable = (ev) => {
     const {command}=this.props;
     ev.preventDefault()
     command()

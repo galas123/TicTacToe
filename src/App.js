@@ -1,18 +1,15 @@
 import {chooseX, choose0, reset} from './AC/choosingSide'
+import { SIDE_X, SIDE_O } from './constants'
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import './App.css';
 import ChooseSideBtn from './Components/chooseSideBtn'
 import GameCell from './Components/gameCell'
 import Reset from './Components/reset'
+import Greeting from './Components/greeting'
+
 
 class App extends Component {
-
-  clickCalcButton = (ev) => {
-    const {command}=this.props;
-    ev.preventDefault()
-    command()
-  }
 
   render() {
     const {side, chooseX, choose0, reset}=this.props;
@@ -24,8 +21,8 @@ class App extends Component {
           <button className="choosing-game-btn choosing-game-two">Two players</button>
         </div>
         <div className="choosing-side">
-          <ChooseSideBtn command={()=>chooseX()} caption={'x'} />
-          <ChooseSideBtn command={()=>choose0()} caption={'0'} />
+          <ChooseSideBtn command={()=>chooseX()} caption={SIDE_X} />
+          <ChooseSideBtn command={()=>choose0()} caption={SIDE_O} />
           <div className="choosed-game-side">выбран {side}</div>
         </div>
         
@@ -49,6 +46,9 @@ class App extends Component {
         <div className="reset">
           <Reset command={()=>reset()} text='Reset'/>
         </div>
+        <div className="greeting">
+          <Greeting/>
+          </div>
       </div>
     );
   }

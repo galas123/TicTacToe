@@ -1,10 +1,10 @@
-import {CHOOSE_X, CHOOSE_0, PUT_MARK, RESET, SIDE_X, SIDE_O} from '../constants'
+import {CHOOSE_X, CHOOSE_0, PUT_MARK, RESET, SIDE_X, SIDE_O, ONE_PLAYER, TWO_PLAYER} from '../constants'
 
 
 const defaultState = {
   winner:null,
-  players:2,
-  side :SIDE_X,
+  players:null,
+  side :null,
   table: [null, null,null , null,null, null,null ,null,null]
 
 };
@@ -19,13 +19,22 @@ export default (game = defaultState, action) => {
     case CHOOSE_0:
       return Object.assign({}, game, {side :SIDE_O});
 
+    case ONE_PLAYER:
+      console.log('case ONE_PLAYER')
+    return Object.assign({}, game, {players :1});
+
+    case TWO_PLAYER:
+      return Object.assign({}, game, {players :2});
+    
     case PUT_MARK:
       const table=[].concat(game.table);
+
+      table.splice(payload.number,1,game.side);
       const winner=getWinner(table);
       const isFullTable=(getEmptyCell(table)===false);
 
       if (!winner && !isFullTable) {
-        table.splice(payload.number,1,game.side);
+
         if (game.players === 2) { //меняем игрока
           return Object.assign({}, game, {table}, {side: (game.side == SIDE_O)? SIDE_X : SIDE_O})
         }

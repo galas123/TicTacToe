@@ -7,6 +7,7 @@ body{
   justify-content: center;
   width:200px;
   flex-direction: column;
+  position:relative;
 }
 .choosing-game{
   display:flex;
@@ -33,4 +34,12 @@ body{
 }
 .winner{
   color:orangered;
+}
+.greeting{
+  margin:20px auto;
+}
+.reset{
+  position: absolute;
+  right:10px;
+  top:10px;
 }

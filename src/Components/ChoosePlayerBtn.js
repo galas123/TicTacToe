@@ -5,7 +5,7 @@ import React, {
 
 import cx from 'classnames'
 
-export default class chooseSideBtn extends Component {
+export default class choosePlayerBtn extends Component {
 
   render() {
     const {caption}=this.props;
@@ -17,6 +17,7 @@ export default class chooseSideBtn extends Component {
   clickBtn = (ev) => {
     const {command}=this.props;
     ev.preventDefault()
+    console.log('clickBtn');
     command()
   }
 }

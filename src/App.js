@@ -7,6 +7,7 @@ import Greeting from './Components/greeting'
 import ChooseSide from './Components/ChooseSide'
 import ChoosePlayers from './Components/ChoosePlayers'
 import Table from './Components/Table'
+import CSSTransition from 'react-addons-css-transition-group'
 
 
 class App extends Component {
@@ -18,21 +19,23 @@ class App extends Component {
       content=(<ChoosePlayers/>);
     } else {
       if (!side) {
-        console.log(1)
         content = (<ChooseSide/>);
       }
       else {
-        console.log(2)
         content = (<Table/>);
       }
     }
 console.log('content',content);
     return (
       <div className="wrapper">
-        <h1>Tic Tac Toe</h1>
+        <h1 className="caption">Tic Tac Toe</h1>
+
         <div className="greeting">
+
           <Greeting/>
+
         </div>
+
         <div className="reset">
           <Reset command={()=>reset()} text='Reset'/>
         </div>

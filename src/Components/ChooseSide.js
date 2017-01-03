@@ -12,9 +12,9 @@ class ChooseSide extends Component {
     const {side, chooseX, choose0}=this.props;
     return (
       <div className="choosing-side">
+        <div className="choosed-game-side">Would you like X or O?</div>
         <ChooseSideBtn command={()=>chooseX()} caption={SIDE_X}/>
         <ChooseSideBtn command={()=>choose0()} caption={SIDE_O}/>
-        <div className="choosed-game-side">выбран {side}</div>
       </div>
     )
   }

@@ -12,8 +12,8 @@ class ChoosePlayers extends Component {
     const {choose1, choose2}=this.props;
     return (
       <div className="choosing-game">
-        <ChoosePlayerBtn className="choosing-game-btn choosing-game-one" command={()=>choose1()} caption={'One player'}/>
-        <ChoosePlayerBtn className="choosing-game-btn choosing-game-two" command={()=>choose2()} caption={'Two players'}/>
+        <ChoosePlayerBtn className="choosing-game-btn choosing-game-one" command={()=>choose1()} caption={'1 player'}/>
+        <ChoosePlayerBtn className="choosing-game-btn choosing-game-two" command={()=>choose2()} caption={'2 players'}/>
       </div>
     )
   }

@@ -8,6 +8,7 @@ body{
   width:200px;
   flex-direction: column;
   position:relative;
+  /*background-image: url("http://img0.liveinternet.ru/images/attach/c/5/86/357/86357094_2114651.jpg");*/
 }
 .choosing-game{
   display:flex;
@@ -15,14 +16,17 @@ body{
 }
 .choosing-side{
   display:flex;
-  margin-top:30px;
   justify-content: space-between;
+  align-items: center;
 }
 .choosed-game-side{
-  color:limegreen;;
+  color:lightseagreen;
+  font-weight: 700;
+  width: 50%;
 }
 .game-table{
-  margin:20px auto;
+  margin:0 auto;
+  box-shadow: 2px 2px 0 0 #ccc;
 }
 .raw{
   display:flex;
@@ -31,15 +35,53 @@ body{
   width:50px;
   height:50px;
   border:1px solid #ccc;
+  line-height: 50px;
+  text-align: center;
+  font-size:45px;
+  color:blue;
+}
+.game-cell.o-color{
+  color:red;
 }
 .winner{
-  color:orangered;
+  color:lightseagreen;
+  font-weight: bold;
+  texr-shadow:1px 1px #ccc;
+  font-size:20px;
 }
 .greeting{
   margin:20px auto;
 }
 .reset{
   position: absolute;
-  right:10px;
-  top:10px;
+  right:-20px;
+  top:12px;
+  border-radius: 4px;
+}
+.choosing-game-btn{
+  padding:8px 10px;
+  border-radius: 8px;
+  box-shadow:1px 1px 0 0 #ccc;
+  font-size:16px;
+  min-width:30px;
+}
+.caption{
+  text-shadow: 1px 1px #ccc;
+}
+.winner-enter {
+  opacity: 0.01;
+}
+
+.winner-enter.winner-enter-active {
+  opacity: 1;
+  transition: opacity 800ms ease-in;
+}
+
+.winner-leave {
+  opacity: 1;
+}
+
+.winner-leave.winner-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
 }

@@ -3,30 +3,37 @@ import React, {
 } from 'react';
 import cx from 'classnames'
 import {connect} from 'react-redux'
+import CSSTransition from 'react-addons-css-transition-group'
 
 class Greeting extends Component {
 
   render() {
     const {winner} = this.props;
+    let content;
 
     if (!winner) {
-      return null;
-    }
-    if (winner !== 'nobody') {
-        return (
-          <div className={cx('winner')}>Итак, победил {winner}</div>
-        )
+      content=null;
+    } else {
+      if (winner !== 'nobody') {
+        content = (<div className={cx('winner')}>The Winner is {winner}</div>)
       } else {
-        return (
-          <div className={cx('winner')}>Ничья!</div>
-        )
+        content = (<div className={cx('winner')}>Draw!</div>)
       }
+    }
+    return (
+    <CSSTransition
+      transitionName="winner"
 
-
+      transitionEnterTimeout={1000}
+      transitionLeaveTimeout={1000}>
+      {content}
+    </CSSTransition>
+    )
   }
 }
+
 const mapStateToProps = state=>({
   winner: state.game.winner
-})
+});
 
 export default connect(mapStateToProps, null)(Greeting);

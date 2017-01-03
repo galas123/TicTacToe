@@ -1,6 +1,7 @@
 import React, {
   Component
 } from 'react';
+import {SIDE_O} from '../constants'
 import {putMark} from '../AC/putMark'
 import cx from 'classnames'
 import {connect} from 'react-redux'
@@ -9,10 +10,12 @@ class GameCell extends Component {
 
   render() {
     const {numberCell, table}=this.props;
+    let isO=false;
+    if (table[numberCell]==SIDE_O){ isO=true};
 
 
     return (
-      <div className={cx('game-cell')} onClick={this.clickPutMark}>{table[numberCell]}</div>
+      <div className={cx('game-cell',{'o-color':isO})} onClick={this.clickPutMark}>{table[numberCell]}</div>
     );
   }
 

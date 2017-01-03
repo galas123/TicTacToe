@@ -17,7 +17,6 @@ export default class choosePlayerBtn extends Component {
   clickBtn = (ev) => {
     const {command}=this.props;
     ev.preventDefault()
-    console.log('clickBtn');
     command()
   }
 }

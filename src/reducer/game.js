@@ -5,7 +5,8 @@ const defaultState = {
   winner:null,
   players:null,
   side :null,
-  table: [null, null,null , null,null, null,null ,null,null]
+  table: [null, null,null , null,null, null,null ,null,null],
+  step:1
 
 };
 
@@ -14,17 +15,20 @@ export default (game = defaultState, action) => {
 
   switch (type) {
     case CHOOSE_X:
-      return Object.assign({}, game, {side : SIDE_X});
+      return changeState(game,{side : SIDE_X});
 
     case CHOOSE_0:
-      return Object.assign({}, game, {side :SIDE_O});
+      if (game.players===1){
+        computerStep(changeState(game,{side :SIDE_X}))
+      }
+      return changeState(game,{side :SIDE_O});
 
     case ONE_PLAYER:
-      console.log('case ONE_PLAYER')
-    return Object.assign({}, game, {players :1});
+      console.log('case ONE_PLAYER');
+    return changeState(game, {players:1});
 
     case TWO_PLAYER:
-      return Object.assign({}, game, {players :2});
+      return changeState (game,{players :2});
     
     case PUT_MARK:
       const table=[].concat(game.table);
@@ -34,14 +38,14 @@ export default (game = defaultState, action) => {
       const isFullTable=(getEmptyCell(table)===false);
 
       if (!winner && !isFullTable) {
+        let newState=changeState (game,{table, side: changeSide(game.side)})
+        if (game.players === 1) {
+         //игра с компом - шаг компьютера
+          newState=computerStep(newState);
+          return changeState (newState,{table, side: changeSide(game.side)})
 
-        if (game.players === 2) { //меняем игрока
-          return Object.assign({}, game, {table}, {side: (game.side == SIDE_O)? SIDE_X : SIDE_O})
         }
-
-        else {
-          //игра с компом - шаг компьютера
-        }
+        return newState
       }
        if(winner) {
          return Object.assign({}, game, {table},{winner:winner});
@@ -57,6 +61,63 @@ export default (game = defaultState, action) => {
       
   }
   return game;
+}
+function changeSide(currentSide){
+
+  return (currentSide == SIDE_O)? SIDE_X : SIDE_O
+}
+function changeState(game, change){
+  return Object.assign({}, game, change)
+}
+
+function computerStep(state){
+  console.log('state.step',state.step);
+
+  switch (state.step){
+    case 1: if (state.side===SIDE_X){
+      state.table[4]=SIDE_X
+    };
+      break;
+    case 2:
+      console.log('11',state.table[0]);
+      if (!state.table[0]){
+      console.log('computerStep', 'case 2');
+      state.table[0]=SIDE_X
+    } else {
+      state.table[2]=SIDE_X
+    }
+      break;
+    default:
+      let potentialStep;
+      potentialStep = searchPotentialStep(state.table, SIDE_X);
+      if (potentialStep){state.table[potentialStep]=SIDE_X}
+      else{
+        potentialStep = searchPotentialStep(state.table, SIDE_O);
+        if (potentialStep){state.table[potentialStep]=SIDE_O}
+        else{
+          state.table[getEmptyCell(state.table)]=SIDE_X;
+        }
+      }
+  }
+  state.step++;
+  return state;
+}
+function searchPotentialStep(table, sign){
+  let emptyCell=checkPotentialStepInLine(table, sign,0,1,2)||checkPotentialStepInLine(table, sign,3,4,5)
+    || checkPotentialStepInLine(table, sign,6,7,8)||checkPotentialStepInLine(table, sign,0,3,6)
+    || checkPotentialStepInLine(table, sign,1,4,7)|| checkPotentialStepInLine(table, sign,2,5,8)
+    || checkPotentialStepInLine(table, sign,0,4,8)|| checkPotentialStepInLine(table, sign,2,4,6);
+   return emptyCell;
+}
+
+
+function checkPotentialStepInLine(table, sign, x,y,z){
+  const quantitySign=[table[x],table[y],table[z]].reduce(function(prev,item){if (item===sign){return prev++}},0);
+  const emptyCell=[table[x],table[y],table[z]].indexOf(null);
+  if (quantitySign==2 && emptyCell!==-1 ){
+    return emptyCell
+  }
+  return false;
 }
 
 function getWinner(table){

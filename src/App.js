@@ -25,7 +25,7 @@ class App extends Component {
         content = (<Table/>);
       }
     }
-console.log('content',content);
+
     return (
       <div className="wrapper">
         <h1 className="caption">Tic Tac Toe</h1>

@@ -18,10 +18,11 @@ export default (game = defaultState, action) => {
       return changeState(game,{side : SIDE_X});
 
     case CHOOSE_0:
+      let firstState=game;
       if (game.players===1){
-        computerStep(changeState(game,{side :SIDE_X}))
+        firstState=computerStep(changeState(game,{side :SIDE_X}))
       }
-      return changeState(game,{side :SIDE_O});
+      return changeState(firstState,{side :SIDE_O});
 
     case ONE_PLAYER:
       console.log('case ONE_PLAYER');
@@ -34,15 +35,16 @@ export default (game = defaultState, action) => {
       const table=[].concat(game.table);
 
       table.splice(payload.number,1,game.side);
-      const winner=getWinner(table);
-      const isFullTable=(getEmptyCell(table)===false);
+      let winner=getWinner(table);
+      let isFullTable=(getEmptyCell(table)===false);
 
       if (!winner && !isFullTable) {
         let newState=changeState (game,{table, side: changeSide(game.side)})
         if (game.players === 1) {
          //игра с компом - шаг компьютера
           newState=computerStep(newState);
-          return changeState (newState,{table, side: changeSide(game.side)})
+
+          return changeState (newState,{table, side: changeSide(newState.side)})
 
         }
         return newState
@@ -64,24 +66,21 @@ export default (game = defaultState, action) => {
 }
 function changeSide(currentSide){
 
-  return (currentSide == SIDE_O)? SIDE_X : SIDE_O
+  return (currentSide === SIDE_O)? SIDE_X : SIDE_O
 }
+
 function changeState(game, change){
   return Object.assign({}, game, change)
 }
 
 function computerStep(state){
-  console.log('state.step',state.step);
-
   switch (state.step){
     case 1: if (state.side===SIDE_X){
       state.table[4]=SIDE_X
     };
       break;
     case 2:
-      console.log('11',state.table[0]);
       if (!state.table[0]){
-      console.log('computerStep', 'case 2');
       state.table[0]=SIDE_X
     } else {
       state.table[2]=SIDE_X
@@ -99,7 +98,7 @@ function computerStep(state){
         }
       }
   }
-  state.step++;
+  state.step=state.step+1
   return state;
 }
 function searchPotentialStep(table, sign){
@@ -107,13 +106,21 @@ function searchPotentialStep(table, sign){
     || checkPotentialStepInLine(table, sign,6,7,8)||checkPotentialStepInLine(table, sign,0,3,6)
     || checkPotentialStepInLine(table, sign,1,4,7)|| checkPotentialStepInLine(table, sign,2,5,8)
     || checkPotentialStepInLine(table, sign,0,4,8)|| checkPotentialStepInLine(table, sign,2,4,6);
+  console.log('emptyCell',emptyCell);
    return emptyCell;
 }
 
 
 function checkPotentialStepInLine(table, sign, x,y,z){
-  const quantitySign=[table[x],table[y],table[z]].reduce(function(prev,item){if (item===sign){return prev++}},0);
-  const emptyCell=[table[x],table[y],table[z]].indexOf(null);
+  const quantitySign=[table[x],table[y],table[z]].reduce(function(prev,item){if (item===sign){return prev+1}; return prev;},0);
+  let emptyCell=[table[x],table[y],table[z]].indexOf(null);
+  if (emptyCell!==-1){
+    switch (emptyCell){
+      case 0: emptyCell=x; break;
+      case 1: emptyCell=y; break;
+      case 2: emptyCell=z; break;
+    }
+  }
   if (quantitySign==2 && emptyCell!==-1 ){
     return emptyCell
   }

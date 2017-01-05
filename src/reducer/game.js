@@ -29,7 +29,6 @@ export default (game = defaultState, action) => {
       return firstState;
 
     case ONE_PLAYER:
-      console.log('case ONE_PLAYER');
     return changeState(game, {players:1});
 
     case TWO_PLAYER:
@@ -50,7 +49,12 @@ export default (game = defaultState, action) => {
         }
         if (game.players === 1) {
          //игра с компом - шаг компьютера
-          newState= computerStepX(Object.assign({}, game, {table}));
+          if (game.side===SIDE_O) {
+            newState = computerStepX(Object.assign({}, game, {table}));
+          }
+          if (game.side===SIDE_X) {
+            newState = computerStepO(Object.assign({}, game, {table}));
+          }
           winner=getWinner(table);
           isFullTable=(getEmptyCell(table)===false);
         }
@@ -78,6 +82,30 @@ function changeSide(currentSide){
 
 function changeState(game, change){
   return Object.assign({}, game, change)
+}
+function computerStepO(state){
+  switch (state.step) {
+    case 1:
+      if (!state.table[4]) {
+        state.table[4]= SIDE_O;
+      } else {
+        state.table[0]=SIDE_O;
+      }
+      break;
+    default:
+      let potentialStep;
+      potentialStep = searchPotentialStep(state.table, SIDE_O);
+      if (potentialStep){state.table[potentialStep]=SIDE_O}
+      else{
+        potentialStep = searchPotentialStep(state.table, SIDE_X);
+        if (potentialStep){state.table[potentialStep]=SIDE_O}
+        else{
+          state.table[getEmptyCell(state.table)]=SIDE_O;
+        }
+      }
+  }
+  state.step=state.step+1
+  return state;
 }
 
 function computerStepX(state){

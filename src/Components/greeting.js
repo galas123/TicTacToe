@@ -4,6 +4,7 @@ import React, {
 import cx from 'classnames'
 import {connect} from 'react-redux'
 import CSSTransition from 'react-addons-css-transition-group'
+import {NOBODY} from '../constants'
 
 class Greeting extends Component {
 
@@ -14,7 +15,7 @@ class Greeting extends Component {
     if (!winner) {
       content=null;
     } else {
-      if (winner !== 'nobody') {
+      if (winner !== NOBODY) {
         content = (<div className={cx('winner')}>The Winner is {winner}</div>)
       } else {
         content = (<div className={cx('winner')}>Draw!</div>)

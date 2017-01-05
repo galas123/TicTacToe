@@ -6,4 +6,5 @@ export const SIDE_X = 'X'
 export const SIDE_O = 'O'
 export const TWO_PLAYER = 'two players'
 export const ONE_PLAYER = 'one player'
+export const NOBODY = 'NOBODY'
 

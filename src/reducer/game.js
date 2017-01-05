@@ -1,4 +1,4 @@
-import {CHOOSE_X, CHOOSE_0, PUT_MARK, RESET, SIDE_X, SIDE_O, ONE_PLAYER, TWO_PLAYER} from '../constants'
+import {CHOOSE_X, CHOOSE_0, PUT_MARK, RESET, SIDE_X, SIDE_O, ONE_PLAYER, TWO_PLAYER, NOBODY} from '../constants'
 
 
 const defaultState = {
@@ -23,7 +23,7 @@ export default (game = defaultState, action) => {
         firstState=changeState(game, {side : SIDE_X});
       }
       if (game.players===1){
-        firstState=changeState(game,{side : SIDE_O});
+        firstState=changeState(game, {table:[].concat(game.table), side : SIDE_O});
         firstState=computerStepX(firstState);
       }
       return firstState;
@@ -40,7 +40,7 @@ export default (game = defaultState, action) => {
       table.splice(payload.number,1,game.side);
       let winner=getWinner(table);
       let isFullTable=(getEmptyCell(table)===false);
-      let newState;
+      let newState=Object.assign({}, game, {table});
 
       if (!winner && !isFullTable) {
         if (game.players === 2) {
@@ -55,8 +55,8 @@ export default (game = defaultState, action) => {
           if (game.side===SIDE_X) {
             newState = computerStepO(Object.assign({}, game, {table}));
           }
-          winner=getWinner(table);
-          isFullTable=(getEmptyCell(table)===false);
+          winner=getWinner(newState.table);
+          isFullTable=(getEmptyCell(newState.table)===false);
         }
       }
 
@@ -64,7 +64,8 @@ export default (game = defaultState, action) => {
          return Object.assign({}, newState,{winner:winner});
        }
        if (isFullTable){
-         return Object.assign({}, newState, {winner:'nobody'});
+         console.log ('newState', newState);
+         return Object.assign({}, newState, {winner:NOBODY});
        }
 
       return newState;
@@ -91,6 +92,9 @@ function computerStepO(state){
       } else {
         state.table[0]=SIDE_O;
       }
+      break;
+    case 5:
+      console.log('5 step O: ', state);
       break;
     default:
       let potentialStep;
@@ -119,6 +123,8 @@ function computerStepX(state){
     } else {
       state.table[2]=SIDE_X
     }
+      break;
+    case 6:
       break;
     default:
       let potentialStep;
@@ -174,9 +180,7 @@ function getWinner(table){
 }
 
 function getEmptyCell(table){
-  console.log('table', table);
   const emptyCell=table.indexOf(null);
-  console.log('emptyCell', emptyCell);
   if (emptyCell===-1) {return false;} else {return emptyCell;}
 }
 

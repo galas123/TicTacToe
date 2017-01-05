@@ -26,7 +26,7 @@ class Greeting extends Component {
       transitionName="winner"
 
       transitionEnterTimeout={1000}
-      transitionLeaveTimeout={1000}>
+      transitionLeaveTimeout={0}>
       {content}
     </CSSTransition>
     )

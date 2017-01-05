@@ -7,7 +7,6 @@ import Greeting from './Components/greeting'
 import ChooseSide from './Components/ChooseSide'
 import ChoosePlayers from './Components/ChoosePlayers'
 import Table from './Components/Table'
-import CSSTransition from 'react-addons-css-transition-group'
 
 
 class App extends Component {
@@ -18,7 +17,7 @@ class App extends Component {
     if (!players) {
       content=(<ChoosePlayers/>);
     } else {
-      if (!side) {
+      if (!side && players===1) {
         content = (<ChooseSide/>);
       }
       else {

@@ -19,9 +19,6 @@ export default (game = defaultState, action) => {
 
     case CHOOSE_0:
       let firstState;
-      if (game.players===2){
-        firstState=changeState(game, {side : SIDE_X});
-      }
       if (game.players===1){
         firstState=changeState(game, {table:[].concat(game.table), side : SIDE_O});
         firstState=computerStepX(firstState);
@@ -32,7 +29,7 @@ export default (game = defaultState, action) => {
     return changeState(game, {players:1});
 
     case TWO_PLAYER:
-      return changeState (game,{players :2});
+      return changeState (changeState(game,{side : SIDE_X}),{players :2});
     
     case PUT_MARK:
       const table=[].concat(game.table);
@@ -45,7 +42,7 @@ export default (game = defaultState, action) => {
       if (!winner && !isFullTable) {
         if (game.players === 2) {
           //игра с человеком, смена игрока
-          newState=changeState (game,{table, side: changeSide(game.side)})
+          newState=changeState (newState, {side: changeSide(game.side)})
         }
         if (game.players === 1) {
          //игра с компом - шаг компьютера
@@ -64,7 +61,6 @@ export default (game = defaultState, action) => {
          return Object.assign({}, newState,{winner:winner});
        }
        if (isFullTable){
-         console.log ('newState', newState);
          return Object.assign({}, newState, {winner:NOBODY});
        }
 
@@ -92,9 +88,6 @@ function computerStepO(state){
       } else {
         state.table[0]=SIDE_O;
       }
-      break;
-    case 5:
-      console.log('5 step O: ', state);
       break;
     default:
       let potentialStep;
@@ -124,8 +117,6 @@ function computerStepX(state){
       state.table[2]=SIDE_X
     }
       break;
-    case 6:
-      break;
     default:
       let potentialStep;
       potentialStep = searchPotentialStep(state.table, SIDE_X);
@@ -146,7 +137,6 @@ function searchPotentialStep(table, sign){
     || checkPotentialStepInLine(table, sign,6,7,8)||checkPotentialStepInLine(table, sign,0,3,6)
     || checkPotentialStepInLine(table, sign,1,4,7)|| checkPotentialStepInLine(table, sign,2,5,8)
     || checkPotentialStepInLine(table, sign,0,4,8)|| checkPotentialStepInLine(table, sign,2,4,6);
-  console.log('emptyCell',emptyCell);
    return emptyCell;
 }
 

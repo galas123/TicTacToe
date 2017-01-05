@@ -18,11 +18,15 @@ export default (game = defaultState, action) => {
       return changeState(game,{side : SIDE_X});
 
     case CHOOSE_0:
-      let firstState=game;
-      if (game.players===1){
-        firstState=computerStep(changeState(game,{side :SIDE_X}))
+      let firstState;
+      if (game.players===2){
+        firstState=changeState(game, {side : SIDE_X});
       }
-      return changeState(firstState,{side :SIDE_O});
+      if (game.players===1){
+        firstState=changeState(game,{side : SIDE_O});
+        firstState=computerStepX(firstState);
+      }
+      return firstState;
 
     case ONE_PLAYER:
       console.log('case ONE_PLAYER');
@@ -37,26 +41,29 @@ export default (game = defaultState, action) => {
       table.splice(payload.number,1,game.side);
       let winner=getWinner(table);
       let isFullTable=(getEmptyCell(table)===false);
+      let newState;
 
       if (!winner && !isFullTable) {
-        let newState=changeState (game,{table, side: changeSide(game.side)})
+        if (game.players === 2) {
+          //игра с человеком, смена игрока
+          newState=changeState (game,{table, side: changeSide(game.side)})
+        }
         if (game.players === 1) {
          //игра с компом - шаг компьютера
-          newState=computerStep(newState);
-
-          return changeState (newState,{table, side: changeSide(newState.side)})
-
+          newState= computerStepX(Object.assign({}, game, {table}));
+          winner=getWinner(table);
+          isFullTable=(getEmptyCell(table)===false);
         }
-        return newState
       }
+
        if(winner) {
-         return Object.assign({}, game, {table},{winner:winner});
+         return Object.assign({}, newState,{winner:winner});
        }
        if (isFullTable){
-         return Object.assign({}, game, {table},{winner:'nobody'});
+         return Object.assign({}, newState, {winner:'nobody'});
        }
 
-      return Object.assign({}, game, {table});
+      return newState;
     
     case RESET:
       return defaultState;
@@ -73,11 +80,10 @@ function changeState(game, change){
   return Object.assign({}, game, change)
 }
 
-function computerStep(state){
+function computerStepX(state){
   switch (state.step){
-    case 1: if (state.side===SIDE_X){
-      state.table[4]=SIDE_X
-    };
+    case 1:
+      state.table[4]=SIDE_X;
       break;
     case 2:
       if (!state.table[0]){
@@ -92,7 +98,7 @@ function computerStep(state){
       if (potentialStep){state.table[potentialStep]=SIDE_X}
       else{
         potentialStep = searchPotentialStep(state.table, SIDE_O);
-        if (potentialStep){state.table[potentialStep]=SIDE_O}
+        if (potentialStep){state.table[potentialStep]=SIDE_X}
         else{
           state.table[getEmptyCell(state.table)]=SIDE_X;
         }

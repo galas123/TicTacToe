@@ -24,17 +24,15 @@ class GameCell extends Component {
 
 
   clickPutMark = (ev) => {
-    const {numberCell, putMark, table, winner}=this.props;
+    const {numberCell, putMark}=this.props;
     ev.preventDefault();
-    if (table[numberCell] === null && winner === null) {
       putMark(numberCell);
-    }
+    
   }
 }
 
 const mapStateToProps = state=>({
   table       : state.game.table,
-  winner      : state.game.winner
-})
+});
 
 export default connect(mapStateToProps, {putMark})(GameCell);

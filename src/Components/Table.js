@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import '../App.css';
+
 import GameCell from './gameCell'
 
-
+import '../App.css';
 
 export default class Table extends Component {
 

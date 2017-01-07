@@ -39,7 +39,6 @@ class App extends Component {
 }
 
 const mapStateToProps = state=>({
-  table       : state.game.table,
   side        : state.game.side,
   playersCount: state.game.playersCount
 });

@@ -1,56 +1,47 @@
-import {reset} from './AC/choosingSide'
 import React, {Component} from 'react';
-import {connect} from 'react-redux'
-import './App.css';
-import Reset from './Components/reset'
-import Greeting from './Components/greeting'
-import ChooseSide from './Components/ChooseSide'
-import ChoosePlayers from './Components/ChoosePlayers'
+import {connect} from 'react-redux';
+
+import {reset} from './AC/choosingSide';
+
+import Reset from './Components/reset';
+import Greeting from './Components/greeting';
+import ChooseSide from './Components/ChooseSide';
+import ChoosePlayers from './Components/ChoosePlayers';
 import Table from './Components/Table'
+
+import './App.css';
 
 
 class App extends Component {
 
   render() {
-    const {side, players, reset}=this.props;
+    const {side, playersCount, reset}=this.props;
     let content;
-    if (!players) {
-      content=(<ChoosePlayers/>);
+    if (!playersCount) {
+      content = <ChoosePlayers/>;
     } else {
-      if (!side && players===1) {
-        content = (<ChooseSide/>);
-      }
-      else {
-        content = (<Table/>);
-      }
+      const needToChooseSide = !side && playersCount === 1;
+      content = needToChooseSide ? <ChooseSide/> : <Table/>;
     }
-
     return (
       <div className="wrapper">
         <h1 className="caption">Tic Tac Toe</h1>
-
         <div className="greeting">
-
           <Greeting/>
-
         </div>
-
         <div className="reset">
-          <Reset command={()=>reset()} text='Reset'/>
+          <Reset command={()=>reset()} text="Reset"/>
         </div>
-        
         {content}
-        
-        
       </div>
     );
   }
 }
 
 const mapStateToProps = state=>({
-  table: state.game.table,
-  side : state.game.side,
-  players:state.game.players
+  table       : state.game.table,
+  side        : state.game.side,
+  playersCount: state.game.playersCount
 });
 
 export default connect(mapStateToProps, {reset})(App);

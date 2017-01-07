@@ -1,29 +1,33 @@
-import {chooseX, choose0} from '../AC/choosingSide'
-import { SIDE_X, SIDE_O } from '../constants'
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
-import '../App.css';
-import ChooseSideBtn from './chooseSideBtn'
 
+import {SIDE_X, SIDE_O} from '../constants'
+
+import {chooseX, choose0} from '../AC/choosingSide'
+
+import ChooseSideBtn from './chooseSideBtn'
 
 class ChooseSide extends Component {
 
   render() {
-    const {side, chooseX, choose0}=this.props;
     return (
-      <div className="choosing-side">
-        <div className="choosed-game-side">Would you like X or O?</div>
-        <ChooseSideBtn command={()=>chooseX()} caption={SIDE_X}/>
-        <ChooseSideBtn command={()=>choose0()} caption={SIDE_O}/>
+      <div className="choose-side">
+        <div className="choose-side__label">
+          Would you like X or O?
+        </div>
+        <ChooseSideBtn command={this.chooseX} caption={SIDE_X}/>
+        <ChooseSideBtn command={this.chooseO} caption={SIDE_O}/>
       </div>
     )
   }
+
+  chooseX = () => {
+    this.props.chooseX();
+  };
+
+  chooseO = () => {
+    this.props.choose0();
+  };
 }
 
-
-const mapStateToProps = state=>({
-  table: state.game.table,
-  side : state.game.side
-})
-
-export default connect(mapStateToProps, {chooseX, choose0})(ChooseSide);
+export default connect(null, {chooseX, choose0})(ChooseSide);

@@ -3,7 +3,7 @@ import {CHOOSE_X, CHOOSE_0, PUT_MARK, RESET, SIDE_X, SIDE_O, ONE_PLAYER, TWO_PLA
 
 const defaultState = {
   winner:null,
-  players:null,
+  playersCount:null,
   side :null,
   table: [null, null,null , null,null, null,null ,null,null],
   step:1
@@ -19,17 +19,17 @@ export default (game = defaultState, action) => {
 
     case CHOOSE_0:
       let firstState;
-      if (game.players===1){
+      if (game.playersCount===1){
         firstState=changeState(game, {table:[].concat(game.table), side : SIDE_O});
         firstState=computerStepX(firstState);
       }
       return firstState;
 
     case ONE_PLAYER:
-    return changeState(game, {players:1});
+    return changeState(game, {playersCount:1});
 
     case TWO_PLAYER:
-      return changeState (changeState(game,{side : SIDE_X}),{players :2});
+      return changeState (changeState(game,{side : SIDE_X}),{playersCount :2});
     
     case PUT_MARK:
       const table=[].concat(game.table);
@@ -40,11 +40,11 @@ export default (game = defaultState, action) => {
       let newState=Object.assign({}, game, {table});
 
       if (!winner && !isFullTable) {
-        if (game.players === 2) {
+        if (game.playersCount === 2) {
           //игра с человеком, смена игрока
           newState=changeState (newState, {side: changeSide(game.side)})
         }
-        if (game.players === 1) {
+        if (game.playersCount === 1) {
          //игра с компом - шаг компьютера
           if (game.side===SIDE_O) {
             newState = computerStepX(Object.assign({}, game, {table}));

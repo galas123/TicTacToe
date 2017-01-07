@@ -1,20 +1,19 @@
-import { CHOOSE_X, CHOOSE_0, RESET } from '../constants'
+import { CHOOSE_X, CHOOSE_0, RESET } from '../constants';
 
-
-export function chooseX() {
-  return {
+export const chooseX = () => (
+  {
     type   : CHOOSE_X
   }
-}
+);
 
-export function choose0() {
-  return {
+export const choose0 = () => (
+   {
     type   : CHOOSE_0
   }
-}
+);
 
-export function reset() {
-  return {
+export const reset = () => (
+  {
     type   : RESET
   }
-}
+);

@@ -1,12 +1,11 @@
-import { PUT_MARK } from '../constants'
+import {PUT_MARK} from '../constants'
 
-
-export function putMark(number) {
-  return {
-
-    type   : PUT_MARK,
-    payload:{
-      number}  
+export const putMark = (number) => (
+{
+  type   : PUT_MARK,
+  payload: {
+    number
   }
 }
+);
 
